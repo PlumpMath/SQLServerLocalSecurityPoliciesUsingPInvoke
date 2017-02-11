@@ -355,7 +355,7 @@ namespace LsaSecurity
 			
 			//privileges[0] = InitLsaString(privilege);
 
-			IntPtr buffer;
+			IntPtr buffer = IntPtr.Zero;
 			int count;
 			//long count;
 			uint ret = 0;
@@ -443,7 +443,6 @@ namespace LsaSecurity
 					lsaInfo[i] = (LSA_ENUMERATION_INFORMATION)Marshal.PtrToStructure
 					(
 						  (IntPtr)elemOffs
-						  //(LongPtr)elemOffs
 						, typeof(LSA_ENUMERATION_INFORMATION)
 					);
 					
@@ -560,21 +559,37 @@ namespace LsaSecurity
 
 					LSA_UNICODE_STRING tempDomain = lsaDomainName[i].Name;
 					
-					//if(tempDomain.Buffer != null)
-					//{
-						domainNames[i] = tempDomain.Buffer.Substring(0, tempDomain.Length / 2);
-					//}
+					/*
+						
+						//if(tempDomain.Buffer != null)
+						//{
+							domainNames[i] = tempDomain.Buffer.Substring(0, tempDomain.Length / 2);
+						//}
+					*/
 					
+					if(tempDomain.Buffer != null)
+					{
+						domainNames[i] = tempDomain.Buffer.Substring(0, tempDomain.Length / 2);
+					}					
 
 					
 				}
 
-				//string[] domainUserName = new string[count];
-
+				objListofSteps.Add("new string[count] - Instanicating new string[count]");
+				
 				domainUserName = new string[count];
 				
 				for (int i = 0; i < lsaNames.Length; i++)
 				{
+					
+					objListofSteps.Add
+						(
+							"domainUserName[i] = domainNames[lsaNames[i].DomainIndex] \\ + retNames[i] "
+							+ " - i " + i
+							+ " - domainNames[lsaNames[i].DomainIndex] " + domainNames[lsaNames[i].DomainIndex]
+							+ " - retNames[i] " + retNames[i]
+						);
+					
 					domainUserName[i] = domainNames[lsaNames[i].DomainIndex] + "\\" + retNames[i];
 				}
 				

@@ -47,7 +47,7 @@ $listofRights = @(
 					, 'SeLockMemoryPrivilege'
 				)
 
-$rights = "SeManageVolumePrivilege"
+#$rights = "SeManageVolumePrivilege"
 
 
 [LsaSecurity.LsaWrapperCaller]::computer = $null;
